@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 using WalletManagementApi.Models;
 using WalletManagementApi.Services;
 
@@ -14,8 +16,10 @@ public class WalletsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddWallet(Wallet wallet)
+    public async Task<IActionResult> AddWallet([FromBody] Wallet wallet)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
         try
         {
             var createdWallet = await _walletService.AddWalletAsync(wallet);
