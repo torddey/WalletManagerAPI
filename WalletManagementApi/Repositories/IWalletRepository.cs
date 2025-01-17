@@ -37,7 +37,7 @@ namespace WalletManagementApi.Repositories
         /// <summary>
         /// Deletes a wallet from the repository by its ID asynchronously.
         /// </summary>
-        /// <param name="id"> he unique identifier of the wallet to be deleted.</param>
+        /// <param name="id"> The unique identifier of the wallet to be deleted.</param>
         /// <returns> A task representing the asynchronous operation. </returns>
         Task DeleteWalletAsync(Guid id);
 
@@ -45,7 +45,7 @@ namespace WalletManagementApi.Repositories
         /// <summary>
         /// Checks whether a wallet exists for a specific owner and account number asynchronously.
         /// </summary>
-        /// <param name="owner">he owner's identifier.</param>
+        /// <param name="owner"> The owner's identifier.</param>
         /// <param name="accountNumber"> The account number associated with the wallet.</param>
         /// <returns> A boolean value indicating whether the wallet exists. </returns>
         Task<bool> WalletExistsAsync(string owner, string accountNumber);

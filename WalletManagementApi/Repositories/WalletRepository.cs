@@ -93,7 +93,7 @@ namespace WalletManagementApi.Repositories
         /// Counts the number of wallets associated with a specific owner in the database asynchronously.
         /// </summary>
         /// <param name="owner"> The owner's identifier </param>
-        /// <returns> he count of wallets owned by the specified owner. </returns>
+        /// <returns> The count of wallets owned by the specified owner. </returns>
         public async Task<int> CountWalletsByOwnerAsync(string owner)
         {
             return await _context.Wallets.CountAsync(w => w.Owner == owner);
