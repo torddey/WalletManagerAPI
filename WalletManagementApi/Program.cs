@@ -17,8 +17,8 @@ builder.Services.AddDbContext<WalletDbContext>(options =>
 builder.Services.AddScoped<IWalletRepository, WalletRepository>();
 builder.Services.AddScoped<WalletService>();
 
-builder.Services.AddEndpointsApiExplorer(); // Enables support for minimal APIs in Swagger
-builder.Services.AddSwaggerGen();          // Registers Swagger generator
+builder.Services.AddEndpointsApiExplorer(); 
+builder.Services.AddSwaggerGen();          
 
 var app = builder.Build();
 

@@ -1,0 +1,305 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WalletManagementApi</name>
+    </assembly>
+    <members>
+        <member name="T:WalletsController">
+            <summary>
+            Handles API requests for wallet management operations, including adding, retrieving, and deleting wallets.
+            </summary>
+        </member>
+        <member name="M:WalletsController.#ctor(WalletManagementApi.Services.WalletService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WalletsController"/> class with the specified wallet service.
+            </summary>
+            <param name="walletService"> The service used to manage wallet operations. </param>
+        </member>
+        <member name="M:WalletsController.AddWallet(WalletManagementApi.Models.Wallet)">
+            <summary>
+            Adds a new wallet to the system
+            </summary>
+            <param name="wallet"> The wallet to be added </param>
+            <returns>
+            A <see cref="T:Microsoft.AspNetCore.Mvc.CreatedAtActionResult"/> containing the newly created wallet if successful.
+            Returns <see cref="T:Microsoft.AspNetCore.Mvc.BadRequestObjectResult"/> if the data is invalid or a limit is reached.
+            Returns <see cref="T:Microsoft.AspNetCore.Mvc.ConflictObjectResult"/> if a duplicate wallet exists.
+            Returns <see cref="T:Microsoft.AspNetCore.Mvc.StatusCodeResult"/> for server errors.
+            </returns>
+        </member>
+        <member name="M:WalletsController.DeleteWallet(System.Guid)">
+            <summary>
+            Deletes a wallet by its unique identifier
+            </summary>
+            <param name="id"> The unique identifier of the wallet to delete.</param>
+            <returns>
+            Returns <see cref="T:Microsoft.AspNetCore.Mvc.NoContentResult"/> if the wallet is deleted successfully.
+            Returns <see cref="T:Microsoft.AspNetCore.Mvc.NotFoundObjectResult"/> if the wallet is not found.
+            Returns <see cref="T:Microsoft.AspNetCore.Mvc.StatusCodeResult"/> for server errors.
+            </returns>
+        </member>
+        <member name="M:WalletsController.GetWalletById(System.Guid)">
+            <summary>
+            Retrieves a wallet by its unique identifier.
+            </summary>
+            <param name="id"> The unique identifier of the wallet to retrieve. </param>
+            <returns>
+            Returns <see cref="T:Microsoft.AspNetCore.Mvc.OkObjectResult"/> containing the wallet if found.
+            Returns <see cref="T:Microsoft.AspNetCore.Mvc.NotFoundObjectResult"/> if the wallet does not exist.
+            Returns <see cref="T:Microsoft.AspNetCore.Mvc.StatusCodeResult"/> for server errors.
+            </returns>
+        </member>
+        <member name="M:WalletsController.GetAllWallets(System.String)">
+            <summary>
+            Retrieves all wallets for a specific owner.
+            </summary>
+            <param name="owner">The owner of the wallets to retrieve.</param>
+            <returns>
+            Returns <see cref="T:Microsoft.AspNetCore.Mvc.OkObjectResult"/> containing a list of wallets if found.
+            Returns <see cref="T:Microsoft.AspNetCore.Mvc.NoContentResult"/> if no wallets are found for the specified owner.
+            Returns <see cref="T:Microsoft.AspNetCore.Mvc.StatusCodeResult"/> for server errors.
+            </returns>
+        </member>
+        <member name="T:WalletManagementApi.Data.WalletDbContext">
+            <summary>
+            Represents the database context for managing wallet-related data.
+            Provides access to the Wallets table and manages database operations.
+            </summary>
+        </member>
+        <member name="M:WalletManagementApi.Data.WalletDbContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{WalletManagementApi.Data.WalletDbContext})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WalletManagementApi.Data.WalletDbContext"/> class with specified options.
+            </summary>
+            <param name="options"> The options to configure the DbContext. </param>
+        </member>
+        <member name="P:WalletManagementApi.Data.WalletDbContext.Wallets">
+            <summary>
+            The options to configure the DbContext.
+            </summary>
+        </member>
+        <member name="T:WalletManagementApi.Models.Wallet">
+            <summary>
+            Represents a wallet entity containing details such as owner, type, account information, and more.
+            </summary>
+        </member>
+        <member name="P:WalletManagementApi.Models.Wallet.Id">
+            <summary>
+            Gets or sets the unique identifier for the wallet.
+            Defaults to a new GUID value.
+            </summary>
+        </member>
+        <member name="P:WalletManagementApi.Models.Wallet.Name">
+            <summary>
+            Gets or sets the name of the wallet.
+            This field is required and must not exceed 100 characters.
+            </summary>
+        </member>
+        <member name="P:WalletManagementApi.Models.Wallet.Type">
+            <summary>
+            Gets or sets the type of the wallet.
+            This field is required and must be either 'momo' or 'card'.
+            </summary>
+        </member>
+        <member name="P:WalletManagementApi.Models.Wallet.AccountNumber">
+            <summary>
+            Gets or sets the account number associated with the wallet.
+            This field is required and must be between 6 and 16 characters in length.
+            </summary>
+        </member>
+        <member name="P:WalletManagementApi.Models.Wallet.AccountScheme">
+            <summary>
+            Gets or sets the account scheme associated with the wallet.
+            This field is required and must be one of the following: 'visa', 'mastercard', 'mtn', 'vodafone', or 'airteltigo'.
+            </summary>
+        </member>
+        <member name="P:WalletManagementApi.Models.Wallet.CreatedAt">
+            <summary>
+            Gets or sets the date and time when the wallet was created.
+            Defaults to the current UTC date and time.
+            </summary>
+        </member>
+        <member name="P:WalletManagementApi.Models.Wallet.Owner">
+            <summary>
+             Gets or sets the owner's contact information, which must be a valid phone number.
+            This field is required.
+            </summary>
+        </member>
+        <member name="T:WalletManagementApi.Repositories.IWalletRepository">
+            <summary>
+             Defines the methods for interacting with wallet data.
+            </summary>
+        </member>
+        <member name="M:WalletManagementApi.Repositories.IWalletRepository.GetAllWalletsAsync(System.String)">
+            <summary>
+            Retrieves all wallets for a specific owner asynchronously.
+            </summary>
+            <param name="owner">The owner's identifier.</param>
+            <returns> A collection of wallets associated with the owner. </returns>
+        </member>
+        <member name="M:WalletManagementApi.Repositories.IWalletRepository.GetWalletByIdAsync(System.Guid)">
+            <summary>
+            Retrieves a specific wallet by its ID asynchronously.
+            </summary>
+            <param name="id">The unique identifier of the wallet.</param>
+            <returns>The wallet with the specified ID.</returns>
+        </member>
+        <member name="M:WalletManagementApi.Repositories.IWalletRepository.AddWalletAsync(WalletManagementApi.Models.Wallet)">
+            <summary>
+            Adds a new wallet to the repository asynchronously.
+            </summary>
+            <param name="wallet">The wallet to be added.</param>
+            <returns> A task representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:WalletManagementApi.Repositories.IWalletRepository.DeleteWalletAsync(System.Guid)">
+            <summary>
+            Deletes a wallet from the repository by its ID asynchronously.
+            </summary>
+            <param name="id"> he unique identifier of the wallet to be deleted.</param>
+            <returns> A task representing the asynchronous operation. </returns>
+        </member>
+        <member name="M:WalletManagementApi.Repositories.IWalletRepository.WalletExistsAsync(System.String,System.String)">
+            <summary>
+            Checks whether a wallet exists for a specific owner and account number asynchronously.
+            </summary>
+            <param name="owner">he owner's identifier.</param>
+            <param name="accountNumber"> The account number associated with the wallet.</param>
+            <returns> A boolean value indicating whether the wallet exists. </returns>
+        </member>
+        <member name="M:WalletManagementApi.Repositories.IWalletRepository.CountWalletsByOwnerAsync(System.String)">
+            <summary>
+            Counts the number of wallets associated with a specific owner asynchronously.
+            </summary>
+            <param name="owner"> The owner's identifier. </param>
+            <returns> The count of wallets owned by the specified owner.</returns>
+        </member>
+        <member name="T:WalletManagementApi.Repositories.WalletRepository">
+            <summary>
+            Implements the IWalletRepository interface to interact with the wallet data stored in the database.
+            </summary>
+        </member>
+        <member name="M:WalletManagementApi.Repositories.WalletRepository.#ctor(WalletManagementApi.Data.WalletDbContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WalletManagementApi.Repositories.WalletRepository"/> class.
+            </summary>
+            <param name="context"> The database context to interact with the wallet data. </param>
+        </member>
+        <member name="M:WalletManagementApi.Repositories.WalletRepository.GetAllWalletsAsync(System.String)">
+            <summary>
+            Retrieves all wallets for a specific owner from the database asynchronously.
+            </summary>
+            <param name="owner"> The owner's identifier </param>
+            <returns> A collection of wallets associated with the owner. </returns>
+        </member>
+        <member name="M:WalletManagementApi.Repositories.WalletRepository.GetWalletByIdAsync(System.Guid)">
+            <summary>
+            Retrieves a specific wallet by its ID from the database asynchronously.
+            </summary>
+            <param name="id"> The unique identifier of the wallet. </param>
+            <returns> The wallet with the specified ID, or null if not found. </returns>
+        </member>
+        <member name="M:WalletManagementApi.Repositories.WalletRepository.AddWalletAsync(WalletManagementApi.Models.Wallet)">
+            <summary>
+            Adds a new wallet to the database asynchronously.
+            </summary>
+            <param name="wallet"> The wallet to be added. </param>
+            <returns> A task representing the asynchronous operation. </returns>
+        </member>
+        <member name="M:WalletManagementApi.Repositories.WalletRepository.DeleteWalletAsync(System.Guid)">
+            <summary>
+            Deletes a wallet from the database by its ID asynchronously.
+            </summary>
+            <param name="id"> The unique identifier of the wallet to be deleted. </param>
+            <returns> A task representing the asynchronous operation. </returns>
+        </member>
+        <member name="M:WalletManagementApi.Repositories.WalletRepository.WalletExistsAsync(System.String,System.String)">
+            <summary>
+            Checks whether a wallet exists for a specific owner and account number asynchronously.
+            </summary>
+            <param name="owner"> The owner's identifier. </param>
+            <param name="accountNumber"> The account number associated with the wallet. </param>
+            <returns> A boolean value indicating whether the wallet exists. </returns>
+        </member>
+        <member name="M:WalletManagementApi.Repositories.WalletRepository.CountWalletsByOwnerAsync(System.String)">
+            <summary>
+            Counts the number of wallets associated with a specific owner in the database asynchronously.
+            </summary>
+            <param name="owner"> The owner's identifier </param>
+            <returns> he count of wallets owned by the specified owner. </returns>
+        </member>
+        <member name="T:WalletManagementApi.Services.WalletService">
+            <summary>
+            Provides business logic for managing wallets, including adding, deleting, and retrieving wallets.
+            </summary>
+        </member>
+        <member name="M:WalletManagementApi.Services.WalletService.#ctor(WalletManagementApi.Repositories.IWalletRepository)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WalletManagementApi.Services.WalletService"/> class with the specified repository.
+            </summary>
+            <param name="walletRepository"> The repository to manage wallet data.</param>
+        </member>
+        <member name="M:WalletManagementApi.Services.WalletService.AddWalletAsync(WalletManagementApi.Models.Wallet)">
+            <summary>
+            Adds a new wallet to the system.
+            </summary>
+            <param name="wallet">The wallet to be added.</param>
+            <returns> Operation's success status, message, and the created wallet.</returns>
+        </member>
+        <member name="M:WalletManagementApi.Services.WalletService.DeleteWalletAsync(System.Guid)">
+            <summary>
+            Deletes a wallet by its unique identifier.
+            </summary>
+            <param name="id"> The unique identifier of the wallet to be deleted.</param>
+            <returns> <c>true</c> if the wallet was successfully deleted; otherwise, <c>false</c>. </returns>
+        </member>
+        <member name="M:WalletManagementApi.Services.WalletService.GetWalletByIdAsync(System.Guid)">
+            <summary>
+            Retrieves a wallet by its unique identifier.
+            </summary>
+            <param name="id"> The unique identifier of the wallet to retrieve. </param>
+            <returns> The wallet associated with the specified identifier, or <c>null</c> if not found. </returns>
+        </member>
+        <member name="M:WalletManagementApi.Services.WalletService.GetAllWalletsAsync(System.String)">
+            <summary>
+            Retrieves all wallets belonging to a specific owner.
+            </summary>
+            <param name="owner"> The owner of the wallets to retrieve. </param>
+            <returns> A collection of wallets owned by the specified owner. </returns>
+        </member>
+        <member name="T:ServiceResult`1">
+            <summary>
+            Represents the result of a service operation.
+            </summary>
+            <typeparam name="T"> The type of data returned by the service operation. </typeparam>
+        </member>
+        <member name="P:ServiceResult`1.Success">
+            <summary>
+            Gets or sets a value indicating whether the operation was successful.
+            </summary>
+        </member>
+        <member name="P:ServiceResult`1.Message">
+            <summary>
+            Gets or sets the message providing additional information about the operation's result.
+            </summary>
+        </member>
+        <member name="P:ServiceResult`1.Data">
+            <summary>
+            Gets or sets the data returned by the service operation.
+            </summary>
+        </member>
+        <member name="M:ServiceResult`1.SuccessResult(`0,System.String)">
+            <summary>
+            Creates a successful service result.
+            </summary>
+            <param name="data"> The data associated with the successful operation. </param>
+            <param name="message"> An optional message describing the success. </param>
+            <returns></returns>
+        </member>
+        <member name="M:ServiceResult`1.FailureResult(System.String)">
+            <summary>
+            Creates a failed service result.
+            </summary>
+            <param name="message"> A message describing the reason for failure. </param>
+            <returns> A <see cref="T:ServiceResult`1"/> representing a failed operation. </returns>
+        </member>
+    </members>
+</doc>

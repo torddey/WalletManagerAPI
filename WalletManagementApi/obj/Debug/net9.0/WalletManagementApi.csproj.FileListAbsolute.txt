@@ -46,3 +46,5 @@ C:\Users\HP\Desktop\PROJECTS\WalletManagerAPI\WalletManagementApi\bin\Debug\net9
 C:\Users\HP\Desktop\PROJECTS\WalletManagerAPI\WalletManagementApi\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\HP\Desktop\PROJECTS\WalletManagerAPI\WalletManagementApi\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\HP\Desktop\PROJECTS\WalletManagerAPI\WalletManagementApi\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\HP\Desktop\PROJECTS\WalletManagerAPI\WalletManagementApi\bin\Debug\net9.0\WalletManagementApi.xml
+C:\Users\HP\Desktop\PROJECTS\WalletManagerAPI\WalletManagementApi\obj\Debug\net9.0\WalletManagementApi.xml
